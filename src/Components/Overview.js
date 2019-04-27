@@ -7,9 +7,10 @@ const Overview = (props) => {
     <main>
       <div className="overview-container">
       <h2>Things To Do</h2>
+      <hr/>
       {
         groupNames.map((groupName, index) => {
-          return <GroupEntry group={props.groups[groupName]} index={index}/>
+          return <GroupEntry group={props.groups[groupName]} index={index} icon={props.icon}/>
         })
       }
       </div>
