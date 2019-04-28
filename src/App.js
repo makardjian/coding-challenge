@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import './App.css';
 import Overview from './Components/Overview';
+import Details from './Components/Details';
 import axios from 'axios';
 import Bluebird from 'bluebird';
 
@@ -14,6 +15,7 @@ export default class App extends Component {
     }
     this.fetchIcons = this.fetchIcons.bind(this);
     this.fetchData = this.fetchData.bind(this);
+    this.renderDetails = this.renderDetails.bind(this);
   }
 
   componentDidMount () {
@@ -53,12 +55,24 @@ export default class App extends Component {
     });
   }
 
+  renderDetails (groupName) {
+    this.setState({
+      view: groupName,
+    })
+  }
+
   render() {
     const { view, groups, icons } = this.state;
     if (view === 'overview') {
       return (
         <div id='App'>
-          <Overview groups={groups} icons={icons}/>
+          <Overview groups={groups} icons={icons} renderDetails={this.renderDetails}/>
+        </div>
+      )
+    } else {
+      return (
+        <div id='App'>
+          <Details group={groups[view]}/>
         </div>
       )
     }
