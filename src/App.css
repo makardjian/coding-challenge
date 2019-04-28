@@ -8,15 +8,17 @@ html {
   
 }
 
-hr{
+hr {
   height: 1px;
   background-color: #E8E8E8;
   border: none; 
-  }
+  margin: 0%;
+}
 
 h2 {
   font-weight: 400;
   color: 	#787878;
+  display: inline-block;
 }
   
 
@@ -25,6 +27,7 @@ h2 {
   padding-top: 3rem;
   width: 70%;
   text-align: left;
+  position: relative;
 }
 
 .overview-group-entry-text {
@@ -47,4 +50,39 @@ h2 {
 .svg-group {
   float: left;
   margin-top: 1.75rem;
+}
+
+.details-all-groups-box{
+  position: absolute;
+  top: 66%;
+  right: 0%;
+}
+
+.details-all-groups-text {
+  text-transform: uppercase;
+  font-size: smaller;
+  color: #0099CC;
+}
+
+.task-container {
+  margin: auto;
+  width: 70%;
+  text-align: left;
+  position: relative;
+}
+
+.task-entry-box{
+  height: 4rem;
+  position: relative;
+}
+
+.task-text {
+  position: absolute;
+  top: 40%;
+  left: 5%;
+}
+
+.bullet-icon {
+  position: absolute;
+  top: 33%;
 }

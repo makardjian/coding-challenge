@@ -29,6 +29,7 @@ export default class App extends Component {
     .then(data => {
       let allTasks = data.data;
       for (let task of allTasks) {
+        task.dependencyCount = task.dependencyIds.length;
         let group = task.group;
         if (allGroups[group]) allGroups[group].push(task);
         else allGroups[group] = [task];
@@ -58,8 +59,31 @@ export default class App extends Component {
   renderDetails (groupName) {
     this.setState({
       view: groupName,
-    })
+    });
   }
+
+  // toggleCompleted (group, toggledTask, taskStatus) {
+  //   let oldGroupData = Object.assign({}, this.state.groups);
+  //   for (let task of oldGroupData[group]) {
+  //     if (task.id === toggledTask) {
+  //       if (task.completedAt === null) task.completedAt = (new Date()).toString();
+  //       else task.completedAt = null;
+  //       continue;
+  //     }
+  //     if (task.dependencyIds.includes(toggledTask.id)) {
+  //       if (taskStatus === 'complete') task.dependencyCount -= 1;
+  //       else task.dependencyCount += 1;
+  //     }
+  //   }
+
+  //   for (let key in oldGroupData) {
+  //     if (key === group) continue;
+  //     else 
+  //   }
+
+
+    
+  // }
 
   render() {
     const { view, groups, icons } = this.state;
@@ -72,7 +96,7 @@ export default class App extends Component {
     } else {
       return (
         <div id='App'>
-          <Details group={groups[view]}/>
+          <Details group={groups[view]} icons={icons} />
         </div>
       )
     }
