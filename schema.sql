@@ -18,3 +18,4 @@ CREATE TABLE groups (
   group_name VARCHAR(50) NOT NULL,
 );
 
+-- //Reminder to create a dependcies table

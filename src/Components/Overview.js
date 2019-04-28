@@ -1,16 +1,17 @@
-import React, { Component } from 'react'
+import React from 'react'
 import GroupEntry from './GroupEntry'
 
 const Overview = (props) => {
-  let groupNames = Object.keys(props.groups);
+  const { groups, icons } = props;
+  let groupNames = Object.keys(groups);
   return (
     <main>
       <div className="overview-container">
       <h2>Things To Do</h2>
-      <hr/>
+      <hr />
       {
-        groupNames.map((groupName, index) => {
-          return <GroupEntry group={props.groups[groupName]} index={index} icon={props.icon}/>
+        groupNames.map(groupName => {
+          return <GroupEntry group={groups[groupName]} icons={icons}/>
         })
       }
       </div>

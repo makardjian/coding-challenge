@@ -6,7 +6,9 @@
     "axios": "^0.18.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8"
+    "react-html-parser": "^2.0.2",
+    "react-scripts": "2.1.8",
+    "react-svg": "^9.0.3"
   },
   "scripts": {
     "start": "react-scripts start"

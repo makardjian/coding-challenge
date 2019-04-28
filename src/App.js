@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './App.css';
 import Overview from './Components/Overview';
 import axios from 'axios';
+import Bluebird from 'bluebird';
 
 export default class App extends Component {
   constructor(props) {
@@ -9,18 +10,22 @@ export default class App extends Component {
     this.state = {
       view: 'overview',
       groups: {},
-      tasks: [],
       icons: {},
     }
+    this.fetchIcons = this.fetchIcons.bind(this);
+    this.fetchData = this.fetchData.bind(this);
   }
 
   componentDidMount () {
-    let allTasks;
+    this.fetchData();
+    this.fetchIcons();
+  }
+
+  fetchData () {
     let allGroups = {};
-    
     axios.get('/data.json')
     .then(data => {
-      allTasks = data.data;
+      let allTasks = data.data;
       for (let task of allTasks) {
         let group = task.group;
         if (allGroups[group]) allGroups[group].push(task);
@@ -28,23 +33,32 @@ export default class App extends Component {
       }
       this.setState({
         groups: allGroups,
-      })
-    })
-    axios.get('./completed.svg')
-    .then(icon => {
-      let obj = {completed: icon.data}
-      this.setState({
-        icon: obj,
+      });
+    });
+  }
+
+  fetchIcons () {
+    const svgTags = {};
+    const svgRoutes = ['completed', 'group', 'incomplete', 'locked'];
+    Bluebird.each(svgRoutes, (route) => {
+      return axios.get(`./${route}.svg`)
+      .then(svgData => {
+        svgTags[route] = svgData.data;
       });
     })
+    .then(() => {
+      this.setState({
+        icons: svgTags,
+      });
+    });
   }
 
   render() {
-    const { view, groups, icon } = this.state;
+    const { view, groups, icons } = this.state;
     if (view === 'overview') {
       return (
         <div id='App'>
-          <Overview groups={groups} icon={icon}/>
+          <Overview groups={groups} icons={icons}/>
         </div>
       )
     }
