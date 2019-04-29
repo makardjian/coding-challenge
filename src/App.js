@@ -16,6 +16,7 @@ export default class App extends Component {
     this.fetchIcons = this.fetchIcons.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.renderDetails = this.renderDetails.bind(this);
+    this.toggleCompleted = this.toggleCompleted.bind(this);
   }
 
   componentDidMount () {
@@ -62,28 +63,38 @@ export default class App extends Component {
     });
   }
 
-  // toggleCompleted (group, toggledTask, taskStatus) {
-  //   let oldGroupData = Object.assign({}, this.state.groups);
-  //   for (let task of oldGroupData[group]) {
-  //     if (task.id === toggledTask) {
-  //       if (task.completedAt === null) task.completedAt = (new Date()).toString();
-  //       else task.completedAt = null;
-  //       continue;
-  //     }
-  //     if (task.dependencyIds.includes(toggledTask.id)) {
-  //       if (taskStatus === 'complete') task.dependencyCount -= 1;
-  //       else task.dependencyCount += 1;
-  //     }
-  //   }
+  toggleCompleted (group, toggledTask, taskStatus) {
+    console.log(arguments);
+    taskStatus === null ? taskStatus = 'complete' : taskStatus = 'incomplete';
 
-  //   for (let key in oldGroupData) {
-  //     if (key === group) continue;
-  //     else 
-  //   }
+    let oldGroupData = Object.assign({}, this.state.groups);
+    for (let task of oldGroupData[group]) {
+      if (task.id === toggledTask) {
+        if (task.completedAt === null) task.completedAt = (new Date()).toString();
+        else task.completedAt = null;
+        continue;
+      }
+      if (task.dependencyIds.includes(toggledTask.id)) {
+        if (taskStatus === 'complete') task.dependencyCount -= 1;
+        else task.dependencyCount += 1;
+      }
+    }
 
-
-    
-  // }
+    for (let key in oldGroupData) {
+      if (key !== group) {
+        let groupTasks = oldGroupData[key];
+        for (let i = 0; i < groupTasks.length; i += 1) {
+          if (groupTasks[i].dependencyIds.includes(toggledTask.id)) {
+            if (taskStatus === 'complete') groupTasks[i].dependencyCount -= 1;
+            else groupTasks[i].dependencyCount += 1;
+          }
+        }
+      }
+    }
+    this.setState({
+      groups: oldGroupData,
+    });
+  }
 
   render() {
     const { view, groups, icons } = this.state;
@@ -96,7 +107,7 @@ export default class App extends Component {
     } else {
       return (
         <div id='App'>
-          <Details group={groups[view]} icons={icons} />
+          <Details group={groups[view]} icons={icons} toggleCompleted={this.toggleCompleted} />
         </div>
       )
     }

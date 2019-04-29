@@ -2,7 +2,7 @@ import React from 'react';
 import TaskEntry from './TaskEntry';
 
 const Details = (props) => {
-  const { group, icons } = props;
+  const { group, icons, toggleCompleted } = props;
   let groupName = group[0].group;
   console.log(group);
   return (
@@ -18,7 +18,7 @@ const Details = (props) => {
       {
         group.map(task => {
           return (
-            <TaskEntry task={task} icons={icons}/>
+            <TaskEntry task={task} icons={icons} toggleCompleted={toggleCompleted}/>
           )
         })
       }
