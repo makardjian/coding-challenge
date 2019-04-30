@@ -16,7 +16,9 @@ export default class App extends Component {
     this.fetchIcons = this.fetchIcons.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.renderDetails = this.renderDetails.bind(this);
-    this.toggleCompleted = this.toggleCompleted.bind(this);
+    this.toggleTask = this.toggleTask.bind(this);
+    this.returnToOverview = this.returnToOverview.bind(this);
+    this.clearDependencyCompletes = this.clearDependencyCompletes.bind(this);
   }
 
   componentDidMount () {
@@ -63,18 +65,18 @@ export default class App extends Component {
     });
   }
 
-  toggleCompleted (group, toggledTask, taskStatus) {
+  toggleTask (group, toggledTaskId, taskStatus) {
     console.log(arguments);
     taskStatus === null ? taskStatus = 'complete' : taskStatus = 'incomplete';
 
     let oldGroupData = Object.assign({}, this.state.groups);
     for (let task of oldGroupData[group]) {
-      if (task.id === toggledTask) {
+      if (task.id === toggledTaskId) {
         if (task.completedAt === null) task.completedAt = (new Date()).toString();
         else task.completedAt = null;
         continue;
       }
-      if (task.dependencyIds.includes(toggledTask.id)) {
+      if (task.dependencyIds.includes(toggledTaskId)) {
         if (taskStatus === 'complete') task.dependencyCount -= 1;
         else task.dependencyCount += 1;
       }
@@ -84,16 +86,32 @@ export default class App extends Component {
       if (key !== group) {
         let groupTasks = oldGroupData[key];
         for (let i = 0; i < groupTasks.length; i += 1) {
-          if (groupTasks[i].dependencyIds.includes(toggledTask.id)) {
+          if (groupTasks[i].dependencyIds.includes(toggledTaskId)) {
             if (taskStatus === 'complete') groupTasks[i].dependencyCount -= 1;
             else groupTasks[i].dependencyCount += 1;
           }
         }
       }
     }
-    this.setState({
-      groups: oldGroupData,
-    });
+    this.clearDependencyCompletes(toggledTaskId);
+    this.setState({groups: oldGroupData});
+  }
+
+  returnToOverview () {
+    this.setState({view: 'overview'});
+  }
+
+  clearDependencyCompletes (taskId) {
+    let oldData = Object.assign({}, this.state.groups);
+    for (let group in oldData) {
+      for (let task of oldData[group]) {
+        if (task.dependencyIds.includes(taskId)) {
+          task.completedAt = null;
+          this.clearDependencyCompletes(task.id);
+        }
+      }
+    }
+    this.setState({groups: oldData}); 
   }
 
   render() {
@@ -107,9 +125,17 @@ export default class App extends Component {
     } else {
       return (
         <div id='App'>
-          <Details group={groups[view]} icons={icons} toggleCompleted={this.toggleCompleted} />
+          <Details group={groups[view]} icons={icons} toggleTask={this.toggleTask} 
+          returnToOverview={this.returnToOverview}/>
         </div>
       )
     }
   }
 }
+
+/*
+What needs to happen if I untoggle a task which has dependencies
+that have already been completed? 
+  /the completedAt properties of all dependencies needs to be set to null
+  /
+*/
