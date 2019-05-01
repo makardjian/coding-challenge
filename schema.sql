@@ -4,18 +4,24 @@ CREATE DATABASE IF NOT EXISTS epic_todo_list;
 
 USE epic_todo_list;
 
-CREATE TABLE tasks (
-  task_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  task_name VARCHAR (50) NOT NULL,
-  completed_at DATE,
-  group_name VARCHAR(50) NOT NULL,
-  dependencies VARCHAR(255),
-  FOREIGN KEY (group_id) REFERENCES groups(group_id),
-);
-
 CREATE TABLE groups (
-  group_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  group_name VARCHAR(50) NOT NULL,
+  group_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  group_name VARCHAR(255) NOT NULL
 );
 
--- //Reminder to create a dependcies table
+CREATE TABLE tasks (
+  task_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  task_name VARCHAR(255) NOT NULL,
+  completed_at DATE,
+  dependency_count INT NOT NULL,
+  group_id INT NOT NULL,
+  FOREIGN KEY (group_id) REFERENCES groups(group_id)
+);
+
+CREATE TABLE dependencies (
+  dependency_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  task_id INT NOT NULL,
+  pre_req_id INT NOT NULL,
+  FOREIGN KEY (task_id) REFERENCES tasks(task_id),
+  FOREIGN KEY (pre_req_id) REFERENCES tasks(task_id)
+);
