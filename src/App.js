@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Overview from './Components/Overview';
 import Details from './Components/Details';
-import axios from 'axios';
+import Axios from 'axios';
 import Bluebird from 'bluebird';
 
 export default class App extends Component {
@@ -27,91 +27,89 @@ export default class App extends Component {
   }
 
   fetchData () {
-    let allGroups = {};
-    axios.get('/data.json')
+    const groups = {};
+    Axios.get('/data.json')
     .then(data => {
       let allTasks = data.data;
       for (let task of allTasks) {
+        let groupName = task.group;
         task.dependencyCount = task.dependencyIds.length;
-        let group = task.group;
-        if (allGroups[group]) allGroups[group].push(task);
-        else allGroups[group] = [task];
+        if (groups[groupName]) groups[groupName].push(task);
+        else groups[groupName] = [task];
       }
-      this.setState({
-        groups: allGroups,
-      });
+      this.setState({ groups });
     });
   }
 
   fetchIcons () {
-    const svgTags = {};
+    const icons = {};
     const svgRoutes = ['completed', 'group', 'incomplete', 'locked'];
     Bluebird.each(svgRoutes, (route) => {
-      return axios.get(`./${route}.svg`)
+      return Axios.get(`./${route}.svg`)
       .then(svgData => {
-        svgTags[route] = svgData.data;
+        icons[route] = svgData.data;
       });
     })
     .then(() => {
-      this.setState({
-        icons: svgTags,
-      });
+      this.setState({ icons });
     });
   }
 
   renderDetails (groupName) {
-    this.setState({
-      view: groupName,
-    });
+    this.setState({ view: groupName });
   }
 
   toggleTask (group, toggledTaskId, taskStatus) {
-    console.log(arguments);
+    // the taskStatus indicates status of the task before user toggles the task;
     taskStatus === null ? taskStatus = 'complete' : taskStatus = 'incomplete';
 
-    let oldGroupData = Object.assign({}, this.state.groups);
-    for (let task of oldGroupData[group]) {
+    let groups = { ...this.state.groups };
+
+    // itterate only over the corect group in order to find the toggled task;
+    for (let task of groups[group]) { 
       if (task.id === toggledTaskId) {
-        if (task.completedAt === null) task.completedAt = (new Date()).toString();
-        else task.completedAt = null;
-        continue;
-      }
-      if (task.dependencyIds.includes(toggledTaskId)) {
-        if (taskStatus === 'complete') task.dependencyCount -= 1;
-        else task.dependencyCount += 1;
+        task.completedAt === null ? task.completedAt = (new Date()).toString() : 
+        task.completedAt = null;
+        break;
       }
     }
+    this.adjustDependencies(groups, toggledTaskId, taskStatus);
+    this.setState({ groups });
+  }
 
-    for (let key in oldGroupData) {
-      if (key !== group) {
-        let groupTasks = oldGroupData[key];
-        for (let i = 0; i < groupTasks.length; i += 1) {
-          if (groupTasks[i].dependencyIds.includes(toggledTaskId)) {
-            if (taskStatus === 'complete') groupTasks[i].dependencyCount -= 1;
-            else groupTasks[i].dependencyCount += 1;
+  adjustDependencies(groups, id, taskStatus) {
+    // itterate over all tasks to adjust dependencyCounts for dependent tasks;
+    for (let key in groups) {
+      let groupTasks = groups[key];
+      for (let i = 0; i < groupTasks.length; i += 1) {
+        if (groupTasks[i].dependencyIds.includes(id)) {
+          // if the toggledTask is 'complete', then dependent tasks have 1 less dependency;
+          if (taskStatus === 'complete') {
+            groupTasks[i].dependencyCount -= 1;
+          } else {
+            groupTasks[i].dependencyCount += 1;
+            groupTasks[i].completedAt = null;
+            this.adjustDependencies(groups, groupTasks[i].id, 'incomplete');
           }
         }
       }
     }
-    this.clearDependencyCompletes(toggledTaskId);
-    this.setState({groups: oldGroupData});
   }
 
   returnToOverview () {
     this.setState({view: 'overview'});
   }
 
-  clearDependencyCompletes (taskId) {
-    let oldData = Object.assign({}, this.state.groups);
-    for (let group in oldData) {
-      for (let task of oldData[group]) {
+  clearDependencyCompletes (taskId, groups) {
+    for (let group in groups) {
+      for (let task of groups[group]) {
         if (task.dependencyIds.includes(taskId)) {
           task.completedAt = null;
-          this.clearDependencyCompletes(task.id);
+          this.clearDependencyCompletes(task.id, groups);
         }
       }
     }
-    this.setState({groups: oldData}); 
+    this.setState({groups});
   }
 
   render() {
@@ -134,8 +132,10 @@ export default class App extends Component {
 }
 
 /*
-What needs to happen if I untoggle a task which has dependencies
-that have already been completed? 
-  /the completedAt properties of all dependencies needs to be set to null
-  /
+Dev Notes:
+-Fix dependency issue
+-CSS
+-Document API endpoints
+-clean up code
+-remove clearDependencies funciton?
 */

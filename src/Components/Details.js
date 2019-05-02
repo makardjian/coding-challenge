@@ -19,7 +19,7 @@ const Details = (props) => {
         group.map(task => {
           return (
             <TaskEntry task={task} icons={icons} toggleCompleted={toggleTask}/>
-          )
+          );
         })
       }
     </div>
