@@ -21,10 +21,3 @@ const Overview = (props) => {
 }
 
 export default Overview;
-
-/*
-Thoughts about switching to a task-centric stateful architecture:
--In order to render the Overview Component, I would need to itterate 
-over all the tasks in the array and then group then create an object with groups as keys
-then pass those down to the GroupEntry component. 
-*/

@@ -4,10 +4,6 @@ html {
   font-size: 90%;
 }
 
-#App {
-  
-}
-
 hr {
   height: 1px;
   background-color: #E8E8E8;
@@ -20,7 +16,6 @@ h2 {
   color: 	#787878;
   display: inline-block;
 }
-  
 
 .container {
   margin: auto;
@@ -79,7 +74,7 @@ h2 {
 .task-text {
   position: absolute;
   top: 40%;
-  left: 5%;
+  left: 8%;
 }
 
 .svg-task-bullet {
