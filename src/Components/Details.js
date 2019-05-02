@@ -15,9 +15,9 @@ const Details = (props) => {
     </div>
     <div className="task-container">
       {
-        group.map(task => {
+        group.map((task, i) => {
           return (
-            <TaskEntry task={task} icons={icons} dependencyCounts={dependencyCounts} 
+            <TaskEntry key={i} task={task} icons={icons} dependencyCounts={dependencyCounts} 
             toggleCompleted={toggleTask}/>
           );
         })
