@@ -18,7 +18,6 @@ export default class App extends Component {
     this.renderDetails = this.renderDetails.bind(this);
     this.toggleTask = this.toggleTask.bind(this);
     this.returnToOverview = this.returnToOverview.bind(this);
-    this.clearDependencyCompletes = this.clearDependencyCompletes.bind(this);
   }
 
   componentDidMount () {
@@ -100,18 +99,6 @@ export default class App extends Component {
     this.setState({view: 'overview'});
   }
 
-  clearDependencyCompletes (taskId, groups) {
-    for (let group in groups) {
-      for (let task of groups[group]) {
-        if (task.dependencyIds.includes(taskId)) {
-          task.completedAt = null;
-          this.clearDependencyCompletes(task.id, groups);
-        }
-      }
-    }
-    this.setState({groups});
-  }
-
   render() {
     const { view, groups, icons } = this.state;
     if (view === 'overview') {
@@ -137,5 +124,4 @@ Dev Notes:
 -CSS
 -Document API endpoints
 -clean up code
--remove clearDependencies funciton?
 */
