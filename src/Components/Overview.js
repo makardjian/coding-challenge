@@ -10,8 +10,8 @@ const Overview = (props) => {
       <h2>Things To Do</h2>
       <hr />
       {
-        groupNames.map(groupName => {
-          return <GroupEntry group={groups[groupName]} icons={icons} 
+        groupNames.map((groupName, i) => {
+          return <GroupEntry key={i} group={groups[groupName]} icons={icons} 
           renderDetails={renderDetails}/>
         })
       }
