@@ -4,10 +4,6 @@ html {
   font-size: 90%;
 }
 
-#App {
-  
-}
-
 hr {
   height: 1px;
   background-color: #E8E8E8;
@@ -20,7 +16,6 @@ h2 {
   color: 	#787878;
   display: inline-block;
 }
-  
 
 .container {
   margin: auto;
@@ -72,17 +67,27 @@ h2 {
 }
 
 .task-entry-box{
-  height: 4rem;
+  height: 4.5rem;
   position: relative;
 }
 
 .task-text {
   position: absolute;
   top: 40%;
-  left: 5%;
+  left: 8%;
+  font-weight: bold;
+  color: #585858
 }
 
 .svg-task-bullet {
   position: absolute;
   top: 33%;
+}
+
+#task-locked {
+  color: #989898;
+}
+
+#task-completed {
+  text-decoration: line-through;
 }

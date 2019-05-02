@@ -2,13 +2,14 @@ import React from 'react';
 import HtmlParser from 'html-react-parser';
 
 const TaskEntry = (props) => {
-  const { task, icons, toggleCompleted } = props;
-  if (task.dependencyCount > 0) {
+  const { task, icons, dependencyCounts, toggleCompleted } = props;
+  let id = task.id;
+  if (dependencyCounts[id] > 0) {
     return (
       <React.Fragment>
         <div className="task-entry-box">
         {icons ? HtmlParser(icons.locked) : ''}
-          <div className="task-text">{task.task}</div>
+          <div id={"task-locked"} className="task-text">{task.task}</div>
         </div>
         <hr/>
       </React.Fragment>
@@ -18,7 +19,7 @@ const TaskEntry = (props) => {
         <React.Fragment>
         <div className="task-entry-box" onClick={toggleCompleted.bind(this,task.group, task.id, task.completedAt) }>
         {icons ? HtmlParser(icons.completed) : ''}
-          <div className="task-text">{task.task}</div>
+          <div id={"task-completed"}className="task-text">{task.task}</div>
         </div>
         <hr/>
         </React.Fragment>
@@ -36,12 +37,3 @@ const TaskEntry = (props) => {
   }
 }
 export default TaskEntry;
-
-/*
-Dev Notes:
- -The HTML - React parser that I'm currently using is causing problems because it's not converting
- traditional html tag syntax into JSX camelCase. Try using another npm library or look up problems for this
- on stackOverflow.
-
- -Check to see if the functionality for your toggleStatus logic is working.
-*/
