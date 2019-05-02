@@ -126,7 +126,7 @@ export default class App extends Component {
           // dependencies of dependencies should only be considered if the current task was already completed
           queue = queue.concat(dependencies[current]);
         } else {
-          // we can pop off the current value because we know it's already in result
+          // we can pop off the current value because we know it's already in result array
           result.pop();
         }
         dCounts[current] += 1;

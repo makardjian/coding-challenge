@@ -9,7 +9,7 @@ const TaskEntry = (props) => {
       <React.Fragment>
         <div className="task-entry-box">
         {icons ? HtmlParser(icons.locked) : ''}
-          <div className="task-text">{task.task}</div>
+          <div id={"task-locked"} className="task-text">{task.task}</div>
         </div>
         <hr/>
       </React.Fragment>
@@ -19,7 +19,7 @@ const TaskEntry = (props) => {
         <React.Fragment>
         <div className="task-entry-box" onClick={toggleCompleted.bind(this,task.group, task.id, task.completedAt) }>
         {icons ? HtmlParser(icons.completed) : ''}
-          <div className="task-text">{task.task}</div>
+          <div id={"task-completed"}className="task-text">{task.task}</div>
         </div>
         <hr/>
         </React.Fragment>
