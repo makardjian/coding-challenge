@@ -10,7 +10,7 @@ const GroupEntry = (props) => {
    else return acc + 0;
   }, 0);
   return (
-    <div className="entry" onClick={renderDetails.bind(this, groupName)}>
+    <div className="entry" style={{cursor: 'pointer'}} onClick={renderDetails.bind(this, groupName)}>
     {icons ? ReactHtmlParser(icons.group): ''}
       <div className="overview-group-entry-text">
         <div className="overview-group-entry-header">{groupName}</div>
