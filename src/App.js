@@ -85,8 +85,7 @@ export default class App extends Component {
     // itterate only over the corect group in order to find the toggled task;
     for (let task of groups[group]) { 
       if (task.id === toggledTaskId) {
-        task.completedAt === null ? task.completedAt = (new Date()).toString() : 
-        task.completedAt = null;
+        task.completedAt === null ? task.completedAt = (new Date()).toString() : task.completedAt = null;
         break;
       }
     }
@@ -123,13 +122,13 @@ export default class App extends Component {
         if (!result.includes(current)) result.push(current);
         let targetTask = this.findTask(current);
         if (targetTask.completedAt !== null) {
-          // dependencies of dependencies should only be considered if the current task was already completed
+          // dependencies of dependencies should only be considered if the target task was already completed
           queue = queue.concat(dependencies[current]);
         } else {
-          // we can pop off the current value because we know it's already in result array
+          // we can pop off the current value because targetTask.completedAt is already null
           result.pop();
         }
-        dCounts[current] += 1;
+        if (dCounts[current] < targetTask.dependencyIds.length) dCounts[current] += 1;
       }
     }
     this.setState({dependencies, dependencyCounts: dCounts});

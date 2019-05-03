@@ -9,7 +9,7 @@ const TaskEntry = (props) => {
       <React.Fragment>
         <div className="task-entry-box">
         {icons ? HtmlParser(icons.locked) : ''}
-          <div id={"task-locked"} className="task-text">{task.task}</div>
+          <div id="task-locked" className="task-text">{task.task}</div>
         </div>
         <hr/>
       </React.Fragment>
@@ -17,9 +17,9 @@ const TaskEntry = (props) => {
   } else if (task.completedAt !== null) {
       return (
         <React.Fragment>
-        <div className="task-entry-box" onClick={toggleCompleted.bind(this,task.group, task.id, task.completedAt) }>
+        <div className="task-entry-box" style={{cursor: 'pointer'}} onClick={toggleCompleted.bind(this, task.group, task.id, task.completedAt)}>
         {icons ? HtmlParser(icons.completed) : ''}
-          <div id={"task-completed"}className="task-text">{task.task}</div>
+          <div id="task-completed" className="task-text">{task.task}</div>
         </div>
         <hr/>
         </React.Fragment>
@@ -27,7 +27,7 @@ const TaskEntry = (props) => {
   } else {
     return (
       <React.Fragment>
-      <div className="task-entry-box" onClick={toggleCompleted.bind(this,task.group, task.id, task.completedAt)}>
+      <div className="task-entry-box" style={{cursor: 'pointer'}} onClick={toggleCompleted.bind(this,task.group, task.id, task.completedAt)}>
       {icons ? HtmlParser(icons.incomplete) : ''}
         <div className="task-text">{task.task}</div>
       </div>
