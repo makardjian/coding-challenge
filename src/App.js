@@ -91,6 +91,7 @@ export default class App extends Component {
     }
 
     // targetIds should return the ids of tasks that need to be reverted back to incomplete
+    //this logic only matters for complete to incomplete tasks.
     let targetIds = this.adjustDependencies(toggledTaskId, taskStatus);
     if (targetIds.length) {
       for (let key in groups) {
@@ -141,10 +142,12 @@ export default class App extends Component {
 
   render() {
     const { view, groups, icons, dependencyCounts } = this.state;
+    console.log(icons, 'icons')
     if (view === 'overview') {
       return (
         <div id='App'>
-          <Overview groups={groups} icons={icons} renderDetails={this.renderDetails}/>
+          <Overview groups={groups} icons={icons} renderDetails={this.renderDetails}
+          dependencyCounts={dependencyCounts} toggleTask={this.toggleTask}/>
         </div>
       )
     } else {

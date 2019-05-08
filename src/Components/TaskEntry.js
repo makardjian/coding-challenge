@@ -3,6 +3,7 @@ import HtmlParser from 'html-react-parser';
 
 const TaskEntry = (props) => {
   const { task, icons, dependencyCounts, toggleCompleted } = props;
+  console.log(icons);
   let id = task.id;
   if (dependencyCounts[id] > 0) {
     return (
@@ -28,7 +29,7 @@ const TaskEntry = (props) => {
     return (
       <React.Fragment>
       <div className="task-entry-box" style={{cursor: 'pointer'}} onClick={toggleCompleted.bind(this,task.group, task.id, task.completedAt)}>
-      {icons ? HtmlParser(icons.incomplete) : ''}
+      {/* {icons ? HtmlParser(icons.incomplete) : ''} */}
         <div className="task-text">{task.task}</div>
       </div>
       <hr/>
