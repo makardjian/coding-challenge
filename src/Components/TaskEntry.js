@@ -9,7 +9,7 @@ const TaskEntry = (props) => {
     return (
       <React.Fragment>
         <div className="task-entry-box">
-        {icons ? HtmlParser(icons.locked) : ''}
+        {icons.locked ? HtmlParser(icons.locked) : ''}
           <div id="task-locked" className="task-text">{task.task}</div>
         </div>
         <hr/>
@@ -19,7 +19,7 @@ const TaskEntry = (props) => {
       return (
         <React.Fragment>
         <div className="task-entry-box" style={{cursor: 'pointer'}} onClick={toggleCompleted.bind(this, task.group, task.id, task.completedAt)}>
-        {icons ? HtmlParser(icons.completed) : ''}
+        {icons.completed ? HtmlParser(icons.completed) : ''}
           <div id="task-completed" className="task-text">{task.task}</div>
         </div>
         <hr/>
@@ -29,7 +29,7 @@ const TaskEntry = (props) => {
     return (
       <React.Fragment>
       <div className="task-entry-box" style={{cursor: 'pointer'}} onClick={toggleCompleted.bind(this,task.group, task.id, task.completedAt)}>
-      {/* {icons ? HtmlParser(icons.incomplete) : ''} */}
+      {icons.incomplete ? HtmlParser(icons.incomplete) : ''}
         <div className="task-text">{task.task}</div>
       </div>
       <hr/>
